@@ -94,7 +94,7 @@ platform :ios do
 # ////////////////////////////////////////
   desc "Creates a new release of the framework for the current version"
   lane :releasePodspec do
-    pod_push(path: "cocoapodtest.podspec", repo: "git@github.com:Beehivr/Cocoapods-Specs.git'")
+    pod_push(path: "cocoapodtest.podspec", repo: "git@github.com:Beehivr/Cocoapods-Specs.git", allow_warnings: true)
   end
 
 # ////////////////////////////////////////
