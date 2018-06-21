@@ -37,6 +37,7 @@
 		F5758A2520DBDF6000C1DB5B /* cocoapodtestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cocoapodtestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5758A2A20DBDF6000C1DB5B /* cocoapodtestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cocoapodtestTests.swift; sourceTree = "<group>"; };
 		F5758A2C20DBDF6000C1DB5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F5758A3620DBEBE400C1DB5B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +84,7 @@
 		F5758A1220DBDF5F00C1DB5B = {
 			isa = PBXGroup;
 			children = (
+				F5758A3620DBEBE400C1DB5B /* README.md */,
 				F5758A1E20DBDF5F00C1DB5B /* cocoapodtest */,
 				F5758A2920DBDF6000C1DB5B /* cocoapodtestTests */,
 				F5758A1D20DBDF5F00C1DB5B /* Products */,
