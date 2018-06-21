@@ -1,0 +1,128 @@
+# Customise this file, documentation can be found here:
+# https://docs.fastlane.tools/actions/
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+# fastlane_version "2.61.0"
+default_platform :ios
+
+platform :ios do
+
+# ////////////////////////////////////////
+# //
+# // MARK: - Before All
+# //
+# ////////////////////////////////////////
+  before_all do
+    skip_docs
+  end
+
+# ////////////////////////////////////////
+# //
+# // MARK: - Validation
+# //
+# ////////////////////////////////////////
+  desc "Runs all the tests"
+  lane :validateCode do
+    scan(scheme: "cocoapodtestTests")
+  end
+
+
+# ////////////////////////////////////////
+# //
+# // MARK: - Versioning
+# //
+# ////////////////////////////////////////
+  desc "Bumps the version's major number"
+  lane :bumpMajor do
+    bump(type: "major")
+  end
+
+
+  desc "Bumps the version's minor number"
+  lane :bumpMinor do
+    bump(type: "minor")
+  end
+
+
+  desc "Bumps the version's patch number"
+  lane :bumpPatch do
+    bump(type: "patch")
+  end
+
+
+  desc "Bumps the version's type number"
+  private_lane :bump do |options|
+    type = (options[:type])
+
+    ensure_git_branch(branch: 'master')
+    ensure_git_status_clean
+
+    increment_build_number
+    version = increment_version_number(bump_type: type)
+
+    validateCode
+    clean_build_artifacts
+
+    if git_tag_exists(tag: version)
+      reset_git_repo
+      UI.error "Tag #{version} already exists!"
+      notification(message: "Tag #{version} already exists!")
+      exit
+    end
+
+    commit_version_bump(message: "Bump version #{type} to #{version}")
+
+    version_bump_podspec(path: "cocoapodtest.podspec", version_number: version)
+    sh("git add ../cocoapodtest.podspec && git commit --amend --no-edit")
+    add_git_tag(tag: "#{version}")
+    push_to_git_remote
+  end
+
+
+# ////////////////////////////////////////
+# //
+# // MARK: - Release
+# //
+# ////////////////////////////////////////
+  desc "Creates a new release of the framework for the current version"
+  lane :releasePodspec do
+    pod_push(path: "cocoapodtest.podspec", repo: "git@github.com:Beehivr/Cocoapods-Specs.git'")
+  end
+
+# ////////////////////////////////////////
+# //
+# // MARK: - After All
+# //
+# ////////////////////////////////////////
+  after_all do |lane|
+  end
+
+
+# ////////////////////////////////////////
+# //
+# // MARK: - Error Handling
+# //
+# ////////////////////////////////////////
+  error do |lane, exception|
+    reset_git_repo
+    notification(message: exception.message)
+  end
+
+
+end
+
+
+# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
+# All available actions: https://docs.fastlane.tools/actions
+
+# fastlane reports which actions are used
+# No personal data is recorded. Learn more at https://github.com/fastlane/enhancer
