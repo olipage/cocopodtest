@@ -32,9 +32,8 @@ platform :ios do
 # ////////////////////////////////////////
   desc "Runs all the tests"
   lane :validateCode do
-    scan(scheme: "cocoapodtestTests")
+    scan(scheme: "cocoapodtest")
   end
-
 
 # ////////////////////////////////////////
 # //
